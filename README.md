@@ -15,6 +15,15 @@ Monarch Tattoo is a side project exploring Gemini's multimodal AI capabilities a
 - 📍 **Artist Discovery**: Find nearby tattoo shops using Google Maps Grounding API
 - 🗺️ **Interactive Maps**: View artist locations on an in-app map (requires development build)
 
+## Screenshots
+
+<div align="center">
+  <img src="assets/IMG_1282.PNG" alt="Monarch Tattoo App" width="300" />
+  <img src="assets/Screenshot 2025-11-10 at 6.02.59 PM.jpeg" alt="Style Recommendations" width="300" />
+  <img src="assets/Screenshot 2025-11-10 at 6.04.01 PM.jpeg" alt="Tattoo Preview" width="300" />
+  <img src="assets/Screenshot 2025-11-10 at 6.40.35 PM.jpeg" alt="Artist Finder" width="300" />
+</div>
+
 ## Tech Stack
 
 - **Framework**: React Native with Expo SDK 54
