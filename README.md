@@ -20,11 +20,11 @@ Monarch Tattoo is a side project exploring Gemini's multimodal AI capabilities a
 <div align="center">
   <img src="assets/IMG_1282.PNG" alt="Monarch Tattoo App" width="300" />
   
-  <img src="assets/Screenshot%202025-11-10%20at%206.02.59%20PM.jpeg" alt="Style Recommendations" width="300" />
+  <img src="assets/Screenshot%202025-11-10%20at%206.02.59%C2%A0PM.jpeg" alt="Style Recommendations" width="300" />
   
-  <img src="assets/Screenshot%202025-11-10%20at%206.04.01%20PM.jpeg" alt="Tattoo Preview" width="300" />
+  <img src="assets/Screenshot%202025-11-10%20at%206.04.01%C2%A0PM.jpeg" alt="Tattoo Preview" width="300" />
   
-  <img src="assets/Screenshot%202025-11-10%20at%206.40.35%20PM.jpeg" alt="Artist Finder" width="300" />
+  <img src="assets/Screenshot%202025-11-10%20at%206.40.35%C2%A0PM.jpeg" alt="Artist Finder" width="300" />
 </div>
 
 ## Tech Stack
