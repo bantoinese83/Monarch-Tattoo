@@ -1,9 +1,7 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
 import * as LucideIcons from 'lucide-react-native';
-import { Dimensions } from 'react-native';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+import { responsiveSize } from '../utils/responsive';
 
 export type IconName =
   | 'image'
@@ -79,7 +77,7 @@ const Icon: React.FC<IconProps> = ({ name, size, color = '#18181b', style }) => 
     return null;
   }
 
-  const iconSize = size || Math.min(24, SCREEN_WIDTH * 0.06);
+  const iconSize = size || responsiveSize(24, 0.06);
 
   return <IconComponent size={iconSize} color={color} style={style} />;
 };

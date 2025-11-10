@@ -5,36 +5,14 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
-  Platform,
   Alert,
   ScrollView,
   Image,
 } from 'react-native';
-import { pickImage, takePhoto } from '../utils/fileUtils';
+import { createImagePickerHandlers } from '../utils/imagePicker';
+import { responsiveSize, fontFamily } from '../utils/responsive';
 import { triggerHaptic } from '../utils/haptics';
-import { throttle } from '../utils/debounce';
 import Icon from './Icon';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-const fontFamily = {
-  regular: Platform.select({
-    ios: 'System',
-    android: 'Roboto',
-    default: 'System',
-  }),
-  medium: Platform.select({
-    ios: 'System',
-    android: 'Roboto-Medium',
-    default: 'System',
-  }),
-  bold: Platform.select({
-    ios: 'System',
-    android: 'Roboto-Bold',
-    default: 'System',
-  }),
-};
 
 interface CustomInputProps {
   bodyPartImage: string;
@@ -46,35 +24,8 @@ const CustomInput: React.FC<CustomInputProps> = ({ bodyPartImage, onGenerate, on
   const [customIdea, setCustomIdea] = useState('');
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
 
-  const handlePickReferenceImage = throttle(async () => {
-    triggerHaptic('light');
-    try {
-      const base64 = await pickImage();
-      if (base64) {
-        triggerHaptic('success');
-        setReferenceImage(base64);
-      }
-    } catch (error) {
-      triggerHaptic('error');
-      const message = error instanceof Error ? error.message : 'Failed to pick image';
-      Alert.alert('Error', message);
-    }
-  }, 500);
-
-  const handleTakeReferencePhoto = throttle(async () => {
-    triggerHaptic('light');
-    try {
-      const base64 = await takePhoto();
-      if (base64) {
-        triggerHaptic('success');
-        setReferenceImage(base64);
-      }
-    } catch (error) {
-      triggerHaptic('error');
-      const message = error instanceof Error ? error.message : 'Failed to take photo';
-      Alert.alert('Error', message);
-    }
-  }, 500);
+  const { handlePickImage: handlePickReferenceImage, handleTakePhoto: handleTakeReferencePhoto } =
+    createImagePickerHandlers((base64) => setReferenceImage(base64), 'Failed to pick image');
 
   const handleRemoveReference = () => {
     triggerHaptic('light');
@@ -196,7 +147,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ bodyPartImage, onGenerate, on
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    paddingHorizontal: Math.min(16, SCREEN_WIDTH * 0.04),
+    paddingHorizontal: responsiveSize(16, 0.04),
     paddingBottom: 20,
   },
   content: {
@@ -214,7 +165,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   title: {
-    fontSize: Math.min(28, SCREEN_WIDTH * 0.07),
+    fontSize: responsiveSize(28, 0.07),
     fontWeight: 'bold',
     fontFamily: fontFamily.bold,
     color: '#000',
@@ -231,14 +182,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   sectionLabel: {
-    fontSize: Math.min(18, SCREEN_WIDTH * 0.045),
+    fontSize: responsiveSize(18, 0.045),
     fontWeight: 'bold',
     fontFamily: fontFamily.bold,
     color: '#000',
     marginBottom: 12,
   },
   sectionSubtext: {
-    fontSize: Math.min(13, SCREEN_WIDTH * 0.032),
+    fontSize: responsiveSize(13, 0.032),
     color: '#71717a',
     marginBottom: 12,
     fontFamily: fontFamily.regular,
@@ -252,7 +203,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderRadius: 8,
     padding: 16,
-    fontSize: Math.min(16, SCREEN_WIDTH * 0.04),
+    fontSize: responsiveSize(16, 0.04),
     fontFamily: fontFamily.regular,
     color: '#000',
     minHeight: 120,
@@ -283,7 +234,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   referenceButtonText: {
-    fontSize: Math.min(16, SCREEN_WIDTH * 0.04),
+    fontSize: responsiveSize(16, 0.04),
     fontWeight: 'bold',
     fontFamily: fontFamily.bold,
     color: '#000',
@@ -330,7 +281,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   generateButtonText: {
-    fontSize: Math.min(18, SCREEN_WIDTH * 0.045),
+    fontSize: responsiveSize(18, 0.045),
     fontWeight: 'bold',
     fontFamily: fontFamily.bold,
     color: '#000',

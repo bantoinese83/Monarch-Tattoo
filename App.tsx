@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Image, Text, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { AppState, TattooArtist } from './types';
@@ -10,6 +10,7 @@ import {
   findTattooArtists,
 } from './services/geminiService';
 import { getErrorMessage } from './utils/networkUtils';
+import { responsiveSize } from './utils/responsive';
 import Header from './components/Header';
 import ImageUploader from './components/ImageUploader';
 import RecommendationList from './components/RecommendationList';
@@ -19,8 +20,6 @@ import EditControls from './components/EditControls';
 import ArtistFinder from './components/ArtistFinder';
 import LoadingSpinner from './components/LoadingSpinner';
 import ErrorDisplay from './components/ErrorDisplay';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const App: React.FC = () => {
   const [appState, setAppState] = useState<AppState>(AppState.START);
@@ -243,7 +242,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flex: 1,
-    paddingHorizontal: Math.min(16, SCREEN_WIDTH * 0.04),
+    paddingHorizontal: responsiveSize(16, 0.04),
   },
   content: {
     flex: 1,
@@ -251,7 +250,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: Math.min(16, SCREEN_WIDTH * 0.04),
+    paddingHorizontal: responsiveSize(16, 0.04),
     paddingBottom: 20,
     paddingTop: 8,
   },
@@ -263,7 +262,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: Math.min(28, SCREEN_WIDTH * 0.07),
+    fontSize: responsiveSize(28, 0.07),
     fontWeight: 'bold',
     color: '#18181b',
     textAlign: 'center',
