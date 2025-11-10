@@ -2,22 +2,20 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { triggerHaptic } from '../utils/haptics';
 import { throttle } from '../utils/debounce';
+import { useAppContext } from '../contexts/AppContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-interface ErrorDisplayProps {
-  message: string;
-  onRetry: () => void;
-}
+const ErrorDisplay: React.FC = () => {
+  const { error, handleRetryLastAction } = useAppContext();
 
-const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ message, onRetry }) => {
   React.useEffect(() => {
     triggerHaptic('error');
   }, []);
 
   const handleRetry = throttle(() => {
     triggerHaptic('medium');
-    onRetry();
+    handleRetryLastAction();
   }, 500);
 
   return (
@@ -25,7 +23,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ message, onRetry }) => {
       <Text style={styles.title} accessibilityRole="header">
         An Error Occurred
       </Text>
-      <Text style={styles.message}>{message}</Text>
+      <Text style={styles.message}>{error}</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={handleRetry}

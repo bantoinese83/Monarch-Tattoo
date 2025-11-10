@@ -2,28 +2,20 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { triggerHaptic } from '../utils/haptics';
 import { throttle } from '../utils/debounce';
+import { useAppContext } from '../contexts/AppContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-interface RecommendationListProps {
-  recommendations: string[];
-  onSelect: (recommendation: string) => void;
-  onCustomIdea: () => void;
-}
-
-const RecommendationList: React.FC<RecommendationListProps> = ({
-  recommendations,
-  onSelect,
-  onCustomIdea,
-}) => {
+const RecommendationList: React.FC = () => {
+  const { recommendations, handleRecommendationSelect, handleCustomIdeaClick } = useAppContext();
   const handleSelect = throttle((rec: string): void => {
     triggerHaptic('medium');
-    onSelect(rec);
+    handleRecommendationSelect(rec);
   }, 500);
 
   const handleCustomIdea = throttle((): void => {
     triggerHaptic('medium');
-    onCustomIdea();
+    handleCustomIdeaClick();
   }, 500);
 
   return (
@@ -86,12 +78,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
     textAlign: 'center',
-  },
-  emptyText: {
-    fontSize: Math.min(14, SCREEN_WIDTH * 0.035),
-    color: '#71717a',
-    textAlign: 'center',
-    padding: 20,
   },
   divider: {
     flexDirection: 'row',

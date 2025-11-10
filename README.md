@@ -133,6 +133,7 @@ monarch-tattoo/
 ### Gemini API
 
 The app uses Gemini's multimodal capabilities for:
+
 - **Image Analysis**: Analyzing body part images to suggest styles
 - **Image Generation**: Creating realistic tattoo previews (`gemini-2.5-flash-image`)
 - **Text Generation**: Style recommendations (`gemini-2.5-flash`)
@@ -140,13 +141,15 @@ The app uses Gemini's multimodal capabilities for:
 ### Maps Grounding API
 
 The artist finder uses Gemini's Maps Grounding feature:
+
 - Natural language queries (e.g., "tattoo shops near me specializing in neo-traditional")
 - Location-aware search using user's coordinates
 - Returns structured data: names, ratings, reviews, place IDs, and Maps links
 
 **Example Query**:
+
 ```typescript
-"Find tattoo shops and tattoo parlors near me that specialize in ${style} style tattoos"
+'Find tattoo shops and tattoo parlors near me that specialize in ${style} style tattoos';
 ```
 
 ## Development Scripts

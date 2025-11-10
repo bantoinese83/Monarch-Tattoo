@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { responsiveSize } from '../utils/responsive';
 
 interface LoadingSpinnerProps {
   message: string;
@@ -20,7 +19,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: Math.min(24, SCREEN_WIDTH * 0.06),
+    padding: responsiveSize(24, 0.06),
     backgroundColor: '#f4f4f5',
     borderWidth: 4,
     borderColor: '#000',
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   message: {
-    fontSize: Math.min(18, SCREEN_WIDTH * 0.045),
+    fontSize: responsiveSize(18, 0.045),
     fontWeight: 'bold',
     color: '#000',
     marginTop: 16,

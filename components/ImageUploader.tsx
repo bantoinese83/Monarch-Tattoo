@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { createImagePickerHandlers } from '../utils/imagePicker';
-import { responsiveSize, screen, fontFamily } from '../utils/responsive';
+import { responsiveSize, fontFamily } from '../utils/responsive';
+import { useAppContext } from '../contexts/AppContext';
 import Icon from './Icon';
 
-interface ImageUploaderProps {
-  onImageUpload: (base64Image: string) => void;
-}
-
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload }) => {
+const ImageUploader: React.FC = () => {
+  const { handleImageUpload } = useAppContext();
   const { handlePickImage, handleTakePhoto } = createImagePickerHandlers(
-    onImageUpload,
+    handleImageUpload,
     'Failed to pick image'
   );
 

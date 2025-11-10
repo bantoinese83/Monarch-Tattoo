@@ -39,4 +39,3 @@ export const createImagePickerHandlers = (
 
   return { handlePickImage, handleTakePhoto };
 };
-

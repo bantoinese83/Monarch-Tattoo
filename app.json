@@ -12,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#f472b6"
     },
-    "assetBundlePatterns": [
-      "assets/**/*"
-    ],
+    "assetBundlePatterns": ["assets/**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.monarchtattoo.app",

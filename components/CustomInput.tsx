@@ -12,15 +12,12 @@ import {
 import { createImagePickerHandlers } from '../utils/imagePicker';
 import { responsiveSize, fontFamily } from '../utils/responsive';
 import { triggerHaptic } from '../utils/haptics';
+import { useAppContext } from '../contexts/AppContext';
+import { AppState } from '../types';
 import Icon from './Icon';
 
-interface CustomInputProps {
-  bodyPartImage: string;
-  onGenerate: (prompt: string, referenceImage?: string) => void;
-  onBack: () => void;
-}
-
-const CustomInput: React.FC<CustomInputProps> = ({ bodyPartImage, onGenerate, onBack }) => {
+const CustomInput: React.FC = () => {
+  const { originalImage, handleCustomGenerate, setAppState } = useAppContext();
   const [customIdea, setCustomIdea] = useState('');
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
 
@@ -38,7 +35,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ bodyPartImage, onGenerate, on
       return;
     }
     triggerHaptic('medium');
-    onGenerate(customIdea.trim(), referenceImage || undefined);
+    handleCustomGenerate(customIdea.trim(), referenceImage || undefined);
   };
 
   return (
@@ -46,7 +43,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ bodyPartImage, onGenerate, on
       <View style={styles.content}>
         <View style={styles.header}>
           <TouchableOpacity
-            onPress={onBack}
+            onPress={() => setAppState(AppState.RECOMMEND)}
             style={styles.backButton}
             accessibilityLabel="Go back"
             accessibilityRole="button"
@@ -56,11 +53,11 @@ const CustomInput: React.FC<CustomInputProps> = ({ bodyPartImage, onGenerate, on
           <Text style={styles.title}>Custom Tattoo Idea</Text>
         </View>
 
-        {bodyPartImage && (
+        {originalImage && (
           <View style={styles.bodyPartContainer}>
             <Text style={styles.sectionLabel}>Body Part</Text>
             <Image
-              source={{ uri: `data:image/jpeg;base64,${bodyPartImage}` }}
+              source={{ uri: `data:image/jpeg;base64,${originalImage}` }}
               style={styles.bodyPartImage}
               resizeMode="contain"
             />
@@ -289,4 +286,3 @@ const styles = StyleSheet.create({
 });
 
 export default CustomInput;
-

@@ -6,20 +6,15 @@ import {
   Text,
   StyleSheet,
   Keyboard,
-  Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
 import { triggerHaptic } from '../utils/haptics';
 import { throttle } from '../utils/debounce';
+import { useAppContext } from '../contexts/AppContext';
+import { responsiveSize } from '../utils/responsive';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-interface EditControlsProps {
-  onEdit: (prompt: string) => void;
-  onFindArtists: () => void;
-}
-
-const EditControls: React.FC<EditControlsProps> = ({ onEdit, onFindArtists }) => {
+const EditControls: React.FC = () => {
+  const { handleEditRequest, handleFindArtists } = useAppContext();
   const [prompt, setPrompt] = useState('');
 
   const validatePrompt = (text: string): boolean => {
@@ -40,14 +35,14 @@ const EditControls: React.FC<EditControlsProps> = ({ onEdit, onFindArtists }) =>
       return;
     }
     triggerHaptic('medium');
-    onEdit(trimmedPrompt);
+    handleEditRequest(trimmedPrompt);
     setPrompt('');
     Keyboard.dismiss();
   }, 500);
 
-  const handleFindArtists = throttle(() => {
+  const handleFindArtistsClick = throttle(() => {
     triggerHaptic('medium');
-    onFindArtists();
+    handleFindArtists();
   }, 500);
 
   return (
@@ -93,7 +88,7 @@ const EditControls: React.FC<EditControlsProps> = ({ onEdit, onFindArtists }) =>
           <Text style={styles.artistQuestion}>HAPPY WITH THE DESIGN?</Text>
           <TouchableOpacity
             style={styles.artistButton}
-            onPress={handleFindArtists}
+            onPress={handleFindArtistsClick}
             activeOpacity={0.8}
             accessibilityLabel="Find tattoo artist"
             accessibilityHint="Searches for local tattoo artists specializing in this style"
@@ -111,7 +106,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: '#f4f4f5',
-    padding: Math.min(14, SCREEN_WIDTH * 0.035),
+    padding: responsiveSize(14, 0.035),
     borderWidth: 4,
     borderColor: '#000',
   },
@@ -125,12 +120,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 2,
     borderColor: '#000',
-    fontSize: Math.min(14, SCREEN_WIDTH * 0.035),
+    fontSize: responsiveSize(14, 0.035),
     backgroundColor: '#fff',
   },
   editButton: {
     backgroundColor: '#fef08a',
-    paddingHorizontal: Math.min(20, SCREEN_WIDTH * 0.05),
+    paddingHorizontal: responsiveSize(20, 0.05),
     paddingVertical: 10,
     borderWidth: 2,
     borderColor: '#000',
@@ -142,7 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   editButtonText: {
-    fontSize: Math.min(14, SCREEN_WIDTH * 0.035),
+    fontSize: responsiveSize(14, 0.035),
     fontWeight: 'bold',
     color: '#000',
   },
@@ -156,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   artistQuestion: {
-    fontSize: Math.min(14, SCREEN_WIDTH * 0.035),
+    fontSize: responsiveSize(14, 0.035),
     fontWeight: 'bold',
     color: '#000',
     marginBottom: 8,
@@ -176,7 +171,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   artistButtonText: {
-    fontSize: Math.min(18, SCREEN_WIDTH * 0.045),
+    fontSize: responsiveSize(18, 0.045),
     fontWeight: 'bold',
     color: '#000',
   },

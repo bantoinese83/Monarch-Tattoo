@@ -8,34 +8,32 @@ import {
   Linking,
   Alert,
   Dimensions,
-  Platform,
 } from 'react-native';
 import * as Location from 'expo-location';
 import { triggerHaptic } from '../utils/haptics';
 import { throttle } from '../utils/debounce';
-import { TattooArtist } from '../types';
+import { useAppContext } from '../contexts/AppContext';
+import { AppState, TattooArtist } from '../types';
 
 // Conditionally import MapView only if available (requires development build)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let MapView: any = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let Marker: any = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let PROVIDER_GOOGLE: any = null;
 
 try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef
   const mapsModule = require('expo-maps');
   MapView = mapsModule.MapView;
   Marker = mapsModule.Marker;
   PROVIDER_GOOGLE = mapsModule.PROVIDER_GOOGLE;
-} catch (error) {
+} catch {
   console.warn('expo-maps not available, map view will be disabled');
 }
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-interface ArtistFinderProps {
-  artists: TattooArtist[];
-  onBack: () => void;
-  tattooStyle: string;
-}
 
 const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   const fullStars = Math.floor(rating);
@@ -51,8 +49,11 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   );
 };
 
-const ArtistFinder: React.FC<ArtistFinderProps> = ({ artists, onBack, tattooStyle }) => {
-  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+const ArtistFinder: React.FC = () => {
+  const { artists, selectedStyle, setAppState } = useAppContext();
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(
+    null
+  );
   const [showMap, setShowMap] = useState(true);
   const [artistsWithCoords, setArtistsWithCoords] = useState<TattooArtist[]>([]);
 
@@ -78,7 +79,7 @@ const ArtistFinder: React.FC<ArtistFinderProps> = ({ artists, onBack, tattooStyl
     // Filter artists that have coordinates
     const withCoords = artists.filter((artist) => artist.latitude && artist.longitude);
     setArtistsWithCoords(withCoords);
-    
+
     // If no artists have coordinates or MapView is not available, hide map
     if (withCoords.length === 0 || !MapView) {
       setShowMap(false);
@@ -104,7 +105,7 @@ const ArtistFinder: React.FC<ArtistFinderProps> = ({ artists, onBack, tattooStyl
 
   const handleBack = throttle(() => {
     triggerHaptic('light');
-    onBack();
+    setAppState(AppState.PREVIEW);
   }, 500);
 
   const toggleView = throttle(() => {
@@ -134,7 +135,7 @@ const ArtistFinder: React.FC<ArtistFinderProps> = ({ artists, onBack, tattooStyl
 
     const latitudes = artistsWithCoords.map((a) => a.latitude!).filter(Boolean);
     const longitudes = artistsWithCoords.map((a) => a.longitude!).filter(Boolean);
-    
+
     if (userLocation) {
       latitudes.push(userLocation.latitude);
       longitudes.push(userLocation.longitude);
@@ -160,7 +161,7 @@ const ArtistFinder: React.FC<ArtistFinderProps> = ({ artists, onBack, tattooStyl
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title} accessibilityRole="header">
-          Artists for {tattooStyle}
+          Artists for {selectedStyle}
         </Text>
         <View style={styles.headerButtons}>
           {artistsWithCoords.length > 0 && MapView && (
@@ -197,25 +198,22 @@ const ArtistFinder: React.FC<ArtistFinderProps> = ({ artists, onBack, tattooStyl
             showsMyLocationButton={false}
           >
             {userLocation && Marker && (
-              <Marker
-                coordinate={userLocation}
-                title="Your Location"
-                pinColor="#f472b6"
-              />
+              <Marker coordinate={userLocation} title="Your Location" pinColor="#f472b6" />
             )}
-            {artistsWithCoords.map((artist, index) => (
-              Marker && (
-                <Marker
-                  key={index}
-                  coordinate={{
-                    latitude: artist.latitude!,
-                    longitude: artist.longitude!,
-                  }}
-                  title={artist.title}
-                  description={artist.rating ? `${artist.rating.toFixed(1)} ⭐` : undefined}
-                />
-              )
-            ))}
+            {artistsWithCoords.map(
+              (artist, index) =>
+                Marker && (
+                  <Marker
+                    key={index}
+                    coordinate={{
+                      latitude: artist.latitude!,
+                      longitude: artist.longitude!,
+                    }}
+                    title={artist.title}
+                    description={artist.rating ? `${artist.rating.toFixed(1)} ⭐` : undefined}
+                  />
+                )
+            )}
           </MapView>
           <View style={styles.mapOverlay}>
             <Text style={styles.mapOverlayText}>

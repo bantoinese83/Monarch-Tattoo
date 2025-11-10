@@ -62,47 +62,55 @@ export const createResponsiveStyle = <T extends Record<string, ViewStyle | TextS
   styles: T
 ): T => {
   return Object.entries(styles).reduce((acc, [key, style]) => {
-    const responsiveStyle: any = { ...style };
-    
-    if (style.fontSize && typeof style.fontSize === 'number') {
-      responsiveStyle.fontSize = responsiveSize(style.fontSize, 0.04);
+    const responsiveStyle: ViewStyle | TextStyle = { ...style };
+
+    if ('fontSize' in responsiveStyle && typeof responsiveStyle.fontSize === 'number') {
+      (responsiveStyle as TextStyle).fontSize = responsiveSize(responsiveStyle.fontSize, 0.04);
     }
-    if (style.padding && typeof style.padding === 'number') {
-      responsiveStyle.padding = responsiveSize(style.padding, 0.04);
+    if ('padding' in responsiveStyle && typeof responsiveStyle.padding === 'number') {
+      responsiveStyle.padding = responsiveSize(responsiveStyle.padding, 0.04);
     }
-    if (style.paddingHorizontal && typeof style.paddingHorizontal === 'number') {
-      responsiveStyle.paddingHorizontal = responsiveSize(style.paddingHorizontal, 0.04);
+    if (
+      'paddingHorizontal' in responsiveStyle &&
+      typeof responsiveStyle.paddingHorizontal === 'number'
+    ) {
+      responsiveStyle.paddingHorizontal = responsiveSize(responsiveStyle.paddingHorizontal, 0.04);
     }
-    if (style.paddingVertical && typeof style.paddingVertical === 'number') {
-      responsiveStyle.paddingVertical = responsiveSize(style.paddingVertical, 0.04);
+    if (
+      'paddingVertical' in responsiveStyle &&
+      typeof responsiveStyle.paddingVertical === 'number'
+    ) {
+      responsiveStyle.paddingVertical = responsiveSize(responsiveStyle.paddingVertical, 0.04);
     }
-    if (style.margin && typeof style.margin === 'number') {
-      responsiveStyle.margin = responsiveSize(style.margin, 0.04);
+    if ('margin' in responsiveStyle && typeof responsiveStyle.margin === 'number') {
+      responsiveStyle.margin = responsiveSize(responsiveStyle.margin, 0.04);
     }
-    if (style.marginBottom && typeof style.marginBottom === 'number') {
-      responsiveStyle.marginBottom = responsiveSize(style.marginBottom, 0.04);
+    if ('marginBottom' in responsiveStyle && typeof responsiveStyle.marginBottom === 'number') {
+      responsiveStyle.marginBottom = responsiveSize(responsiveStyle.marginBottom, 0.04);
     }
-    if (style.marginTop && typeof style.marginTop === 'number') {
-      responsiveStyle.marginTop = responsiveSize(style.marginTop, 0.04);
+    if ('marginTop' in responsiveStyle && typeof responsiveStyle.marginTop === 'number') {
+      responsiveStyle.marginTop = responsiveSize(responsiveStyle.marginTop, 0.04);
     }
-    if (style.marginHorizontal && typeof style.marginHorizontal === 'number') {
-      responsiveStyle.marginHorizontal = responsiveSize(style.marginHorizontal, 0.04);
+    if (
+      'marginHorizontal' in responsiveStyle &&
+      typeof responsiveStyle.marginHorizontal === 'number'
+    ) {
+      responsiveStyle.marginHorizontal = responsiveSize(responsiveStyle.marginHorizontal, 0.04);
     }
-    if (style.marginVertical && typeof style.marginVertical === 'number') {
-      responsiveStyle.marginVertical = responsiveSize(style.marginVertical, 0.04);
+    if ('marginVertical' in responsiveStyle && typeof responsiveStyle.marginVertical === 'number') {
+      responsiveStyle.marginVertical = responsiveSize(responsiveStyle.marginVertical, 0.04);
     }
-    if (style.gap && typeof style.gap === 'number') {
-      responsiveStyle.gap = responsiveSize(style.gap, 0.04);
+    if ('gap' in responsiveStyle && typeof responsiveStyle.gap === 'number') {
+      responsiveStyle.gap = responsiveSize(responsiveStyle.gap, 0.04);
     }
-    if (style.minHeight && typeof style.minHeight === 'number') {
-      responsiveStyle.minHeight = responsiveSize(style.minHeight, 0.04);
+    if ('minHeight' in responsiveStyle && typeof responsiveStyle.minHeight === 'number') {
+      responsiveStyle.minHeight = responsiveSize(responsiveStyle.minHeight, 0.04);
     }
-    if (style.minWidth && typeof style.minWidth === 'number') {
-      responsiveStyle.minWidth = responsiveSize(style.minWidth, 0.04);
+    if ('minWidth' in responsiveStyle && typeof responsiveStyle.minWidth === 'number') {
+      responsiveStyle.minWidth = responsiveSize(responsiveStyle.minWidth, 0.04);
     }
-    
-    acc[key] = responsiveStyle;
+
+    (acc as Record<string, ViewStyle | TextStyle>)[key] = responsiveStyle;
     return acc;
   }, {} as T);
 };
-

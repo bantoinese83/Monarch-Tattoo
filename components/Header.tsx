@@ -1,33 +1,15 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { triggerHaptic } from '../utils/haptics';
 import { throttle } from '../utils/debounce';
+import { useAppContext } from '../contexts/AppContext';
+import { responsiveSize, fontFamily } from '../utils/responsive';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-const fontFamily = {
-  bold: Platform.select({
-    ios: 'System',
-    android: 'Roboto-Bold',
-    default: 'System',
-  }),
-  display: Platform.select({
-    ios: 'System',
-    android: 'Roboto-Black',
-    default: 'System',
-  }),
-};
-
-interface HeaderProps {
-  onReset?: () => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ onReset }) => {
-  const handleReset = throttle(() => {
+const Header: React.FC = () => {
+  const { handleReset } = useAppContext();
+  const handleResetClick = throttle(() => {
     triggerHaptic('medium');
-    if (onReset) {
-      onReset();
-    }
+    handleReset();
   }, 500);
 
   return (
@@ -35,18 +17,16 @@ const Header: React.FC<HeaderProps> = ({ onReset }) => {
       <Text style={styles.title} accessibilityRole="header">
         MONARCH TATTOO
       </Text>
-      {onReset && (
-        <TouchableOpacity
-          style={styles.resetButton}
-          onPress={handleReset}
-          activeOpacity={0.8}
-          accessibilityLabel="Start over"
-          accessibilityHint="Resets the app and returns to the home screen"
-          accessibilityRole="button"
-        >
-          <Text style={styles.resetButtonText}>START OVER</Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={styles.resetButton}
+        onPress={handleResetClick}
+        activeOpacity={0.8}
+        accessibilityLabel="Start over"
+        accessibilityHint="Resets the app and returns to the home screen"
+        accessibilityRole="button"
+      >
+        <Text style={styles.resetButtonText}>START OVER</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -57,11 +37,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Math.min(16, SCREEN_WIDTH * 0.04),
-    paddingHorizontal: Math.min(8, SCREEN_WIDTH * 0.02),
+    marginBottom: responsiveSize(16, 0.04),
+    paddingHorizontal: responsiveSize(8, 0.02),
   },
   title: {
-    fontSize: Math.min(26, SCREEN_WIDTH * 0.065),
+    fontSize: responsiveSize(26, 0.065),
     fontWeight: '900',
     fontFamily: fontFamily.display,
     color: '#0f172a',
@@ -71,7 +51,7 @@ const styles = StyleSheet.create({
   },
   resetButton: {
     backgroundColor: '#fef08a',
-    paddingHorizontal: Math.min(12, SCREEN_WIDTH * 0.03),
+    paddingHorizontal: responsiveSize(12, 0.03),
     paddingVertical: 6,
     borderWidth: 2,
     borderColor: '#000',
@@ -83,7 +63,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   resetButtonText: {
-    fontSize: Math.min(11, SCREEN_WIDTH * 0.028),
+    fontSize: responsiveSize(11, 0.028),
     fontWeight: '800',
     fontFamily: fontFamily.bold,
     color: '#0f172a',
