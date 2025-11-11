@@ -108,13 +108,19 @@ npx expo run:android
 
 ```
 monarch-tattoo/
-├── App.tsx                    # Main app component and state management
+├── App.tsx                    # Main app component
 ├── index.js                   # Expo entry point
 ├── app.json                   # Expo configuration
 ├── babel.config.js           # Babel configuration
+├── eslint.config.mjs         # ESLint configuration
+├── .prettierrc.js            # Prettier configuration
 ├── tsconfig.json             # TypeScript configuration
 ├── tsconfig.strict.json      # Strict TypeScript config
-├── assets/                    # App icons, splash screens
+├── types.ts                   # TypeScript type definitions
+├── assets/                    # App icons, splash screens, screenshots
+│   ├── icon.png              # App icon
+│   ├── splash.png            # Splash screen
+│   └── *.PNG, *.jpeg         # Screenshots
 ├── components/                # React Native components
 │   ├── ArtistFinder.tsx      # Artist list and map view
 │   ├── CustomInput.tsx       # Custom tattoo idea input
@@ -126,18 +132,22 @@ monarch-tattoo/
 │   ├── ImageUploader.tsx     # Image upload interface
 │   ├── LoadingSpinner.tsx    # Loading states
 │   └── RecommendationList.tsx # Style recommendations
-├── services/
+├── contexts/                  # React Context providers
+│   └── AppContext.tsx        # Global app state management
+├── services/                  # API and external service integrations
 │   └── geminiService.ts      # Gemini API integration
 │       ├── getTattooIdeas()  # Style recommendations
 │       ├── generateTattoo()  # Generate preview
 │       ├── editTattoo()      # Edit existing design
 │       └── findTattooArtists() # Maps Grounding search
-├── types.ts                   # TypeScript type definitions
-└── utils/
+└── utils/                     # Utility functions and helpers
     ├── debounce.ts           # Debounce utility
     ├── fileUtils.ts          # Image picker helpers
     ├── haptics.ts            # Haptic feedback
-    └── networkUtils.ts       # Error handling utilities
+    ├── imagePicker.ts        # Reusable image picker handlers
+    ├── networkUtils.ts       # Error handling utilities
+    ├── responsive.ts         # Responsive sizing utilities
+    └── styles.ts             # Common style patterns
 ```
 
 ## API Integration
